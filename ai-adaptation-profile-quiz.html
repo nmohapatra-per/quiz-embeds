@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What's Your AI Adaptation Profile?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #151b2e;
+            --text-primary: #e8edf4;
+            --text-secondary: #94a3b8;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #8b5cf6;
+            --accent-warn: #f59e0b;
+            --accent-danger: #ef4444;
+            --accent-success: #10b981;
+            --border: #1e293b;
+            --glow: rgba(59, 130, 246, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.06) 0%, transparent 50%);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        h1 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 400;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .progress-container {
+            margin: 40px 0;
+            animation: fadeIn 0.6s ease 0.2s both;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            width: 0%;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            box-shadow: 0 0 20px var(--glow);
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3));
+            animation: shimmer 2s infinite;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 12px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .question-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 40px;
+            animation: slideInUp 0.6s ease both;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .question-number {
+            color: var(--accent-primary);
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .question-text {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            margin-bottom: 32px;
+            line-height: 1.4;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            background: var(--bg-primary);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .option:hover {
+            border-color: var(--accent-primary);
+            transform: translateX(4px);
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.2);
+        }
+
+        .option:hover::before {
+            left: 100%;
+        }
+
+        .option.selected {
+            border-color: var(--accent-primary);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.05));
+        }
+
+        .option-text {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        button {
+            flex: 1;
+            padding: 16px 32px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            box-shadow: 0 4px 20px var(--glow);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px var(--glow);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-primary);
+        }
+
+        .results {
+            animation: fadeIn 0.8s ease;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding: 48px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.05));
+            border-radius: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .profile-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profile-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .risk-level {
+            display: inline-block;
+            padding: 8px 24px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 16px;
+        }
+
+        .risk-low {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-success);
+            border: 1px solid var(--accent-success);
+        }
+
+        .risk-moderate {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--accent-warn);
+            border: 1px solid var(--accent-warn);
+        }
+
+        .risk-high {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--accent-danger);
+            border: 1px solid var(--accent-danger);
+        }
+
+        .results-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 24px;
+        }
+
+        .results-section h3 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.75rem;
+            margin-bottom: 20px;
+            color: var(--accent-primary);
+        }
+
+        .results-section p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            font-size: 1.0625rem;
+            line-height: 1.7;
+        }
+
+        .results-section ul {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .results-section li {
+            padding: 12px 0;
+            padding-left: 32px;
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        .results-section li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-primary);
+            font-weight: 700;
+        }
+
+        .action-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(139, 92, 246, 0.03));
+            border: 2px solid var(--accent-primary);
+            border-radius: 16px;
+            padding: 32px;
+            margin-top: 32px;
+        }
+
+        .action-box h4 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            color: var(--accent-primary);
+        }
+
+        .restart-btn {
+            display: block;
+            width: 100%;
+            margin-top: 40px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+            padding: 16px;
+            text-align: center;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .restart-btn:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-primary);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 20px 16px;
+            }
+
+            .question-card {
+                padding: 24px;
+            }
+
+            .profile-header {
+                padding: 32px 24px;
+            }
+
+            .results-section {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>What's Your AI Adaptation Profile?</h1>
+            <p class="subtitle">Understand how AI will transform your actual day-to-day work—and what you need to do about it.</p>
+        </header>
+
+        <div id="quiz-container"></div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                id: 1,
+                text: "What percentage of your typical workday involves creating something genuinely new versus following established procedures?",
+                options: [
+                    { text: "80%+ creating new things—I solve unique problems daily", value: "creative", weight: 4 },
+                    { text: "50/50—mix of creative work and standard procedures", value: "mixed", weight: 2 },
+                    { text: "Mostly following procedures, occasional creativity", value: "procedural", weight: 1 },
+                    { text: "Almost entirely following established processes", value: "routine", weight: 0 }
+                ]
+            },
+            {
+                id: 2,
+                text: "When you make decisions at work, what do you primarily rely on?",
+                options: [
+                    { text: "Intuition, experience, and reading complex human situations", value: "intuitive", weight: 4 },
+                    { text: "Mix of documented guidelines and personal judgment", value: "hybrid", weight: 2 },
+                    { text: "Clear rules and established protocols", value: "rule-based", weight: 1 },
+                    { text: "Checklists, scripts, or step-by-step instructions", value: "scripted", weight: 0 }
+                ]
+            },
+            {
+                id: 3,
+                text: "How much of your work requires understanding and responding to human emotions?",
+                options: [
+                    { text: "It's central—my job is about managing emotions, relationships, or sensitive situations", value: "emotional-core", weight: 4 },
+                    { text: "Important but not primary—I need emotional awareness regularly", value: "emotional-secondary", weight: 3 },
+                    { text: "Occasionally relevant—some customer/colleague interaction", value: "emotional-minor", weight: 1 },
+                    { text: "Rarely or never—my work is mostly technical or administrative", value: "emotional-none", weight: 0 }
+                ]
+            },
+            {
+                id: 4,
+                text: "If AI could handle 50% of your current tasks tomorrow, which tasks would remain?",
+                options: [
+                    { text: "The high-stakes, complex judgment calls that require deep expertise", value: "expertise", weight: 4 },
+                    { text: "Creative strategy, relationship management, novel problem-solving", value: "creative-strategy", weight: 3 },
+                    { text: "Oversight and quality control of standardized work", value: "oversight", weight: 2 },
+                    { text: "Honestly? Very little. Most of what I do is rule-based and repetitive", value: "replaceable", weight: 0 }
+                ]
+            },
+            {
+                id: 5,
+                text: "How often does your job involve explaining complex ideas to people with different levels of understanding?",
+                options: [
+                    { text: "Constantly—teaching, persuading, and tailoring communication is my job", value: "communication-core", weight: 4 },
+                    { text: "Regularly—I translate technical or complex info for various audiences", value: "communication-frequent", weight: 3 },
+                    { text: "Occasionally—some presentation or explanation needed", value: "communication-occasional", weight: 1 },
+                    { text: "Rarely—my work doesn't involve much communication or teaching", value: "communication-rare", weight: 0 }
+                ]
+            },
+            {
+                id: 6,
+                text: "What happens when something unexpected goes wrong in your work?",
+                options: [
+                    { text: "I diagnose novel problems and create custom solutions on the fly", value: "problem-solver", weight: 4 },
+                    { text: "I troubleshoot using a mix of experience and established protocols", value: "troubleshooter", weight: 2 },
+                    { text: "I follow escalation procedures or contact specialists", value: "escalator", weight: 1 },
+                    { text: "Unexpected problems are rare—my work is highly predictable", value: "predictable", weight: 0 }
+                ]
+            },
+            {
+                id: 7,
+                text: "How would you describe your current role's skill requirements?",
+                options: [
+                    { text: "Specialized expertise requiring years of training and practice", value: "specialized", weight: 4 },
+                    { text: "Moderate expertise—requires training and experience but not years", value: "moderate-skill", weight: 2 },
+                    { text: "Basic skills with on-the-job training", value: "basic-skill", weight: 1 },
+                    { text: "Minimal training needed—most people could learn it quickly", value: "low-skill", weight: 0 }
+                ]
+            },
+            {
+                id: 8,
+                text: "What's your relationship with data and documentation in your daily work?",
+                options: [
+                    { text: "I analyze complex data to make strategic decisions", value: "data-strategist", weight: 3 },
+                    { text: "I create original content, reports, or documentation", value: "content-creator", weight: 3 },
+                    { text: "I process, organize, or transfer data between systems", value: "data-processor", weight: 0 },
+                    { text: "I verify, input, or check data for accuracy", value: "data-entry", weight: 0 }
+                ]
+            },
+            {
+                id: 9,
+                text: "Honestly assess: If your company had unlimited budget for AI tools, how much of your current work could be automated?",
+                options: [
+                    { text: "Less than 20%—my work is inherently human", value: "low-automation", weight: 4 },
+                    { text: "30-50%—AI could handle routine parts, I'd focus on higher-value work", value: "medium-automation", weight: 2 },
+                    { text: "60-80%—significant automation possible, my role would transform completely", value: "high-automation", weight: 1 },
+                    { text: "80%+—honestly, almost everything I do could be automated", value: "very-high-automation", weight: 0 }
+                ]
+            },
+            {
+                id: 10,
+                text: "What's your honest current skill level with digital tools and learning new software?",
+                options: [
+                    { text: "I'm tech-savvy and quickly master new tools", value: "tech-advanced", weight: 2 },
+                    { text: "Comfortable with standard tools, can learn new ones with effort", value: "tech-moderate", weight: 1 },
+                    { text: "I use what I'm trained on but struggle with new technology", value: "tech-basic", weight: 0 },
+                    { text: "Technology is not my strength—I prefer traditional methods", value: "tech-resistant", weight: -1 }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = [];
+        let totalScore = 0;
+
+        function renderQuestion() {
+            const question = questions[currentQuestion];
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            
+            const html = `
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${progress}%"></div>
+                    </div>
+                    <div class="progress-text">Question ${currentQuestion + 1} of ${questions.length}</div>
+                </div>
+
+                <div class="question-card">
+                    <div class="question-number">Question ${currentQuestion + 1}</div>
+                    <div class="question-text">${question.text}</div>
+                    <div class="options">
+                        ${question.options.map((option, index) => `
+                            <div class="option" data-index="${index}">
+                                <div class="option-text">${option.text}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="button-container">
+                        ${currentQuestion > 0 ? '<button class="btn-secondary" onclick="previousQuestion()">Back</button>' : ''}
+                        <button class="btn-primary" id="next-btn" onclick="nextQuestion()" disabled>
+                            ${currentQuestion === questions.length - 1 ? 'See Results' : 'Next'}
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('quiz-container').innerHTML = html;
+
+            // Add click handlers to options
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    document.getElementById('next-btn').disabled = false;
+                });
+            });
+        }
+
+        function nextQuestion() {
+            const selectedOption = document.querySelector('.option.selected');
+            if (!selectedOption) return;
+
+            const selectedIndex = parseInt(selectedOption.dataset.index);
+            const question = questions[currentQuestion];
+            const answer = question.options[selectedIndex];
+            
+            answers.push(answer);
+            totalScore += answer.weight;
+
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                answers.pop();
+                totalScore -= answers[answers.length - 1]?.weight || 0;
+                renderQuestion();
+            }
+        }
+
+        function calculateProfile() {
+            const maxScore = 37; // Maximum possible score
+            const scorePercentage = (totalScore / maxScore) * 100;
+
+            // Check specific answer patterns for more nuanced results
+            const emotionalWork = answers.filter(a => a.value.includes('emotional')).length;
+            const creativityScore = answers.filter(a => ['creative', 'intuitive', 'expertise'].includes(a.value)).length;
+            const automationRisk = answers.filter(a => ['routine', 'scripted', 'data-entry', 'data-processor'].includes(a.value)).length;
+            const techAdaptability = answers.find(a => ['tech-advanced', 'tech-moderate', 'tech-basic', 'tech-resistant'].includes(a.value))?.weight || 0;
+
+            // Determine profile
+            if (automationRisk >= 4 && totalScore < 12) {
+                return {
+                    title: "High-Risk Transition Required",
+                    subtitle: "Your current tasks are highly automatable—time for strategic retraining",
+                    riskLevel: "high",
+                    description: "Let's be direct: much of your current work is in the crosshairs of AI automation. This isn't about if, but when. The tasks you're doing now—data entry, routine processing, following scripts, predictable procedures—these are exactly what AI excels at.",
+                    reality: "Within 2-5 years, many roles like yours will either be eliminated or fundamentally transformed. Companies are already piloting AI systems that can handle these tasks faster, more accurately, and at a fraction of the cost.",
+                    action: "This is your early warning. You have time to pivot, but you need to start NOW:",
+                    steps: [
+                        "Identify transferable skills: What human elements of your job could translate to other roles?",
+                        "Start learning immediately: Pick one new skill area (technical, creative, or interpersonal) and commit 5-10 hours per week",
+                        "Explore adjacent roles: What jobs in your company or industry require more judgment, creativity, or emotional intelligence?",
+                        "Build a 12-month transition plan: Set concrete milestones for skill development and role exploration",
+                        "Consider formal retraining: Community college certificates, bootcamps, or online courses in growing fields"
+                    ],
+                    timeline: "You have approximately 2-3 years before this becomes urgent. Use this time wisely.",
+                    encouragement: "This is scary but manageable. Thousands of people successfully transition careers. You're getting this information early enough to do it on your terms rather than in crisis mode."
+                };
+            } else if (scorePercentage < 35) {
+                return {
+                    title: "The Pivot-Ready Professional",
+                    subtitle: "Significant transformation ahead—your role will change dramatically",
+                    riskLevel: "moderate",
+                    description: "Your job sits in an interesting middle ground. Parts of what you do are highly automatable, but you also have elements that require human judgment, skill, or interaction. The role you have today will look very different in 5 years.",
+                    reality: "Your job won't disappear, but it will transform significantly. The routine parts of your work will be automated, and you'll need to develop new capabilities to remain valuable. This means your job description will evolve whether you're ready or not.",
+                    action: "You're in a transition zone. Here's how to navigate it:",
+                    steps: [
+                        "Audit your tasks: Categorize everything you do into 'automatable' vs 'human-essential'",
+                        "Double down on human skills: Communication, emotional intelligence, creative problem-solving, complex judgment",
+                        "Learn to manage AI tools: Your future role likely involves directing AI rather than doing manual tasks",
+                        "Position yourself as the 'AI-augmented' expert in your field",
+                        "Start networking toward higher-complexity roles that build on your experience"
+                    ],
+                    timeline: "Expect meaningful changes in 3-5 years. Companies will roll out AI tools gradually, giving you time to adapt.",
+                    encouragement: "You're not starting from scratch—you have domain knowledge and experience. You just need to layer on new capabilities and shift your focus toward the human elements of your work."
+                };
+            } else if (scorePercentage < 60) {
+                return {
+                    title: "The AI-Augmented Professional",
+                    subtitle: "Your role will evolve—AI becomes your power tool",
+                    riskLevel: "moderate",
+                    description: "You're in a relatively strong position. Your work involves meaningful expertise, judgment, or human interaction. AI won't replace you, but it will dramatically change how you work. Think of AI as becoming your research assistant, administrative support, and analytical engine all in one.",
+                    reality: "In 5 years, you'll do roughly the same job but at 3-5x the capacity. AI will handle your routine tasks, data analysis, first drafts, and information gathering. You'll focus on higher-level strategy, relationship management, and complex decision-making.",
+                    action: "Your goal: become the person who knows how to leverage AI tools better than your peers:",
+                    steps: [
+                        "Start experimenting with AI tools now (ChatGPT, Claude, industry-specific AI platforms)",
+                        "Identify which parts of your workflow could be AI-assisted",
+                        "Develop 'AI prompting' skills—learn to direct AI systems effectively",
+                        "Focus on developing uniquely human skills: strategic thinking, emotional intelligence, creative synthesis",
+                        "Position yourself as an early adopter who can train others"
+                    ],
+                    timeline: "AI tools are already available for your field. The question is whether you'll be an early adopter or play catch-up in 2-3 years.",
+                    encouragement: "You're in the sweet spot. Your expertise is valuable, and AI will make you dramatically more effective. The winners in your field will be those who embrace AI as a tool rather than viewing it as a threat."
+                };
+            } else {
+                return {
+                    title: "The Human-Essential Professional",
+                    subtitle: "Your expertise is AI-resistant—but evolution still required",
+                    riskLevel: "low",
+                    description: "Your work is highly resistant to AI automation. It requires deep expertise, complex human judgment, emotional intelligence, or creative problem-solving that AI can't replicate. Jobs like yours are among the safest from displacement.",
+                    reality: "AI won't replace you, but it will change your toolkit. Think of AI as a research assistant, thought partner, and productivity multiplier. You'll still do the core intellectual or interpersonal work, but AI will handle information gathering, routine analysis, and administrative overhead.",
+                    action: "Your advantage: you can focus on getting better at what you already do, rather than scrambling to learn entirely new skills:",
+                    steps: [
+                        "Stay current with AI tools emerging in your field—not to replace your skills, but to enhance them",
+                        "Deepen your specialized expertise—AI makes generalists less valuable but true experts more valuable",
+                        "Develop 'AI collaboration' skills—learn to use AI as a thought partner and research tool",
+                        "Focus on the irreplaceable human elements: building trust, reading rooms, creative synthesis, ethical judgment",
+                        "Consider how AI might free you to do more of the high-value work you already excel at"
+                    ],
+                    timeline: "Your timeline is measured in decades, not years. But staying relevant still requires evolution.",
+                    encouragement: "You're in the best possible position. Your expertise and human skills are exactly what remain valuable as AI handles routine cognitive work. The key is staying curious and adaptable rather than assuming your current approach will work forever."
+                };
+            }
+        }
+
+        function showResults() {
+            const profile = calculateProfile();
+            
+            const html = `
+                <div class="results">
+                    <div class="profile-header">
+                        <div class="profile-title">${profile.title}</div>
+                        <div class="profile-subtitle">${profile.subtitle}</div>
+                        <div class="risk-level risk-${profile.riskLevel}">
+                            ${profile.riskLevel === 'high' ? 'High Automation Risk' : 
+                              profile.riskLevel === 'moderate' ? 'Moderate Transformation' : 
+                              'Low Displacement Risk'}
+                        </div>
+                    </div>
+
+                    <div class="results-section">
+                        <h3>Your Current Reality</h3>
+                        <p>${profile.description}</p>
+                    </div>
+
+                    <div class="results-section">
+                        <h3>What This Actually Means</h3>
+                        <p>${profile.reality}</p>
+                        ${profile.timeline ? `<p><strong>Timeline:</strong> ${profile.timeline}</p>` : ''}
+                    </div>
+
+                    <div class="action-box">
+                        <h4>${profile.action}</h4>
+                        <ul>
+                            ${profile.steps.map(step => `<li>${step}</li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <div class="results-section">
+                        <h3>The Bottom Line</h3>
+                        <p>${profile.encouragement}</p>
+                    </div>
+
+                    <button class="restart-btn" onclick="restartQuiz()">Take Quiz Again</button>
+                </div>
+            `;
+
+            document.getElementById('quiz-container').innerHTML = html;
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            answers = [];
+            totalScore = 0;
+            renderQuestion();
+        }
+
+        // Start the quiz
+        renderQuestion();
+    </script>
+</body>
+</html>

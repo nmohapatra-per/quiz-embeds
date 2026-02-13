@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Which Career Path Fits Your AI Future?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #fafafa;
+            --bg-secondary: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --accent-primary: #2563eb;
+            --accent-secondary: #7c3aed;
+            --accent-tertiary: #db2777;
+            --border: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.05);
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .header-badge {
+            display: inline-block;
+            background: var(--gradient-1);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .progress-container {
+            margin: 40px 0;
+            animation: fadeIn 0.6s ease 0.2s both;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .progress-step {
+            width: calc(100% / 12 - 8px);
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            transition: all 0.4s ease;
+        }
+
+        .progress-step.active {
+            background: var(--gradient-1);
+        }
+
+        .progress-text {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .question-card {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            border-radius: 24px;
+            padding: 48px;
+            margin-bottom: 40px;
+            animation: slideInUp 0.6s ease both;
+            box-shadow: 0 20px 60px var(--shadow);
+        }
+
+        .question-category {
+            color: var(--accent-primary);
+            font-size: 0.8125rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 16px;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 32px;
+            line-height: 1.4;
+            letter-spacing: -0.5px;
+        }
+
+        .scenario-box {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.05), rgba(124, 58, 237, 0.05));
+            border-left: 4px solid var(--accent-primary);
+            padding: 20px 24px;
+            margin-bottom: 32px;
+            border-radius: 8px;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .options {
+            display: grid;
+            gap: 16px;
+        }
+
+        .option {
+            background: var(--bg-primary);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-1);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .option:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px var(--shadow);
+        }
+
+        .option.selected {
+            border-color: var(--accent-primary);
+            background: var(--bg-secondary);
+            box-shadow: 0 8px 32px rgba(37, 99, 235, 0.15);
+        }
+
+        .option.selected::before {
+            opacity: 0.05;
+        }
+
+        .option-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .option-label {
+            font-weight: 700;
+            font-size: 1.0625rem;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .option-description {
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        button {
+            flex: 1;
+            padding: 18px 32px;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.875rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-1);
+            color: white;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-primary);
+        }
+
+        .results {
+            animation: fadeIn 0.8s ease;
+        }
+
+        .pathway-header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding: 60px 48px;
+            background: var(--gradient-1);
+            border-radius: 24px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pathway-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        .pathway-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .pathway-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .pathway-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .pathway-subtitle {
+            font-size: 1.25rem;
+            opacity: 0.95;
+        }
+
+        .results-section {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+
+        .results-section h3 {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--accent-primary);
+            font-weight: 700;
+        }
+
+        .results-section p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            font-size: 1.0625rem;
+            line-height: 1.8;
+        }
+
+        .career-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .career-card {
+            background: var(--bg-primary);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .career-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-4px);
+        }
+
+        .career-card h4 {
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .career-card p {
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .skill-tag {
+            background: var(--bg-primary);
+            border: 2px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-secondary);
+        }
+
+        .action-callout {
+            background: var(--gradient-2);
+            color: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-callout::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="white" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        }
+
+        .action-callout-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .action-callout h4 {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.75rem;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .action-callout ul {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .action-callout li {
+            padding: 12px 0;
+            padding-left: 32px;
+            position: relative;
+            font-size: 1.0625rem;
+        }
+
+        .action-callout li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .restart-btn {
+            display: block;
+            width: 100%;
+            margin-top: 40px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+            padding: 18px;
+            text-align: center;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.875rem;
+        }
+
+        .restart-btn:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-primary);
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 40px 16px;
+            }
+
+            .question-card {
+                padding: 32px 24px;
+            }
+
+            .pathway-header {
+                padding: 40px 24px;
+            }
+
+            .results-section {
+                padding: 28px 24px;
+            }
+
+            .career-examples {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-badge">Career Planning</div>
+            <h1>Which Career Path Fits Your AI Future?</h1>
+            <p class="subtitle">Explore how different career paths align with your strengths and how you want to work alongside AI in the coming decade.</p>
+        </header>
+
+        <div id="quiz-container"></div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                id: 1,
+                category: "Work Philosophy",
+                text: "Imagine it's 2030. What excites you most about your ideal workday?",
+                scenario: "You've been working for 5 years and have found your groove. What does a satisfying day look like?",
+                options: [
+                    { 
+                        label: "Creating and Building", 
+                        description: "Making original work—designs, code, content, strategies that didn't exist before",
+                        value: "creative",
+                        weights: { creative: 3, technical: 1, strategic: 1 }
+                    },
+                    { 
+                        label: "Solving Complex Problems", 
+                        description: "Diagnosing issues, finding root causes, engineering elegant solutions",
+                        value: "problem-solving",
+                        weights: { technical: 3, strategic: 2 }
+                    },
+                    { 
+                        label: "Leading and Influencing", 
+                        description: "Managing teams, shaping strategy, making high-stakes decisions",
+                        value: "leadership",
+                        weights: { strategic: 3, human: 2 }
+                    },
+                    { 
+                        label: "Helping People Directly", 
+                        description: "Teaching, counseling, healing—work where human connection is the core product",
+                        value: "human-service",
+                        weights: { human: 4, creative: 1 }
+                    }
+                ]
+            },
+            {
+                id: 2,
+                category: "AI Relationship",
+                text: "In 5 years, how do you want AI to fit into your work?",
+                options: [
+                    { 
+                        label: "AI as My Power Tool", 
+                        description: "I use AI to amplify my creative or analytical work—it's my research assistant and thought partner",
+                        value: "augmented",
+                        weights: { creative: 2, strategic: 2, technical: 1 }
+                    },
+                    { 
+                        label: "AI as My Subject", 
+                        description: "I build, train, or customize AI systems—the technology itself is what I work on",
+                        value: "builder",
+                        weights: { technical: 4 }
+                    },
+                    { 
+                        label: "AI-Free Zone", 
+                        description: "My work is in domains where AI can't meaningfully contribute—human expertise or judgment is irreplaceable",
+                        value: "ai-resistant",
+                        weights: { human: 3, specialized: 2 }
+                    },
+                    { 
+                        label: "AI as My Team", 
+                        description: "I orchestrate multiple AI systems to accomplish complex goals—I'm the strategist directing AI capabilities",
+                        value: "orchestrator",
+                        weights: { strategic: 3, technical: 2 }
+                    }
+                ]
+            },
+            {
+                id: 3,
+                category: "Skill Development",
+                text: "What type of expertise are you most excited to develop over the next decade?",
+                options: [
+                    { 
+                        label: "Deep Technical Mastery", 
+                        description: "Becoming an expert in a specialized technical domain—coding, engineering, data science, or system architecture",
+                        value: "technical-depth",
+                        weights: { technical: 4, specialized: 2 }
+                    },
+                    { 
+                        label: "Creative Excellence", 
+                        description: "Developing world-class creative skills—design, writing, strategy, or artistic expression",
+                        value: "creative-excellence",
+                        weights: { creative: 4, specialized: 1 }
+                    },
+                    { 
+                        label: "Human Expertise", 
+                        description: "Mastering fields that require emotional intelligence, complex judgment, or human understanding",
+                        value: "human-expertise",
+                        weights: { human: 4, specialized: 2 }
+                    },
+                    { 
+                        label: "Strategic Thinking", 
+                        description: "Learning to see patterns, make complex decisions, and guide organizations through uncertainty",
+                        value: "strategic-thinking",
+                        weights: { strategic: 4, human: 1 }
+                    }
+                ]
+            },
+            {
+                id: 4,
+                category: "Work Environment",
+                text: "Which work environment appeals to you most?",
+                scenario: "Different careers come with different daily realities. What sounds most appealing?",
+                options: [
+                    { 
+                        label: "High-Stakes, High-Visibility", 
+                        description: "Important decisions, meaningful responsibility, your work directly impacts outcomes",
+                        value: "high-stakes",
+                        weights: { strategic: 3, specialized: 2 }
+                    },
+                    { 
+                        label: "Deep Focus, Complex Challenges", 
+                        description: "Solving hard technical or creative problems that require intense concentration",
+                        value: "deep-work",
+                        weights: { technical: 2, creative: 2, specialized: 2 }
+                    },
+                    { 
+                        label: "Collaborative and People-Centered", 
+                        description: "Working closely with others, building relationships, helping people succeed",
+                        value: "collaborative",
+                        weights: { human: 3, strategic: 1 }
+                    },
+                    { 
+                        label: "Autonomous and Flexible", 
+                        description: "Control over your own time and approach, ability to work independently",
+                        value: "autonomous",
+                        weights: { creative: 2, technical: 1, specialized: 1 }
+                    }
+                ]
+            },
+            {
+                id: 5,
+                category: "Risk Tolerance",
+                text: "How do you feel about the pace of change in your future career?",
+                options: [
+                    { 
+                        label: "Bring the Disruption", 
+                        description: "I want to be at the cutting edge where everything is evolving rapidly—tech, AI, emerging fields",
+                        value: "high-change",
+                        weights: { technical: 3, creative: 2 }
+                    },
+                    { 
+                        label: "Steady Evolution", 
+                        description: "I want growth and learning but in fields with more stability and established practices",
+                        value: "moderate-change",
+                        weights: { specialized: 3, human: 2 }
+                    },
+                    { 
+                        label: "Timeless Fundamentals", 
+                        description: "I want to work in domains where core principles don't change much—human nature, fundamental sciences, essential services",
+                        value: "stable",
+                        weights: { human: 3, specialized: 2 }
+                    },
+                    { 
+                        label: "Create the Future", 
+                        description: "I want to be building the technologies and systems that drive change for everyone else",
+                        value: "pioneering",
+                        weights: { technical: 3, strategic: 2 }
+                    }
+                ]
+            },
+            {
+                id: 6,
+                category: "Learning Style",
+                text: "When you imagine learning new skills, what appeals to you most?",
+                options: [
+                    { 
+                        label: "Building Things", 
+                        description: "I learn best by making stuff—projects, prototypes, code, designs",
+                        value: "hands-on",
+                        weights: { technical: 2, creative: 2 }
+                    },
+                    { 
+                        label: "Deep Study", 
+                        description: "I love diving into theory, research, and building systematic knowledge",
+                        value: "academic",
+                        weights: { specialized: 3, technical: 1 }
+                    },
+                    { 
+                        label: "Real-World Practice", 
+                        description: "I learn through experience, mentorship, and working with real people on real problems",
+                        value: "experiential",
+                        weights: { human: 2, strategic: 2 }
+                    },
+                    { 
+                        label: "Strategic Frameworks", 
+                        description: "I like learning high-level patterns and principles I can apply across situations",
+                        value: "conceptual",
+                        weights: { strategic: 3, creative: 1 }
+                    }
+                ]
+            },
+            {
+                id: 7,
+                category: "Impact Focus",
+                text: "What kind of impact do you want your career to have?",
+                scenario: "Looking back at age 65, what kind of legacy would make you feel fulfilled?",
+                options: [
+                    { 
+                        label: "Building Something Lasting", 
+                        description: "Creating products, companies, or systems that outlive me and serve millions",
+                        value: "builder-impact",
+                        weights: { technical: 2, creative: 2, strategic: 2 }
+                    },
+                    { 
+                        label: "Helping Individuals Directly", 
+                        description: "Knowing I made a meaningful difference in the lives of people I worked with personally",
+                        value: "personal-impact",
+                        weights: { human: 4 }
+                    },
+                    { 
+                        label: "Advancing a Field", 
+                        description: "Becoming recognized as an expert who pushed the boundaries of what's possible in my domain",
+                        value: "expertise-impact",
+                        weights: { specialized: 3, technical: 2 }
+                    },
+                    { 
+                        label: "Shaping Strategy and Culture", 
+                        description: "Influencing organizations, industries, or policies in ways that ripple outward",
+                        value: "strategic-impact",
+                        weights: { strategic: 4 }
+                    }
+                ]
+            },
+            {
+                id: 8,
+                category: "Decision Making",
+                text: "When facing a complex decision, what's your natural approach?",
+                options: [
+                    { 
+                        label: "Data and Analysis", 
+                        description: "Gather information, run the numbers, build models to understand the variables",
+                        value: "analytical",
+                        weights: { technical: 3, strategic: 1 }
+                    },
+                    { 
+                        label: "Pattern Recognition", 
+                        description: "Draw on past experience and intuition to see what's similar to situations I've handled before",
+                        value: "experiential-decision",
+                        weights: { specialized: 2, strategic: 2 }
+                    },
+                    { 
+                        label: "Creative Synthesis", 
+                        description: "Look for novel approaches, combine ideas in unexpected ways, imagine new possibilities",
+                        value: "creative-decision",
+                        weights: { creative: 3, strategic: 1 }
+                    },
+                    { 
+                        label: "Human Impact", 
+                        description: "Consider stakeholder needs, emotional factors, and how the decision affects people",
+                        value: "empathetic-decision",
+                        weights: { human: 3, strategic: 1 }
+                    }
+                ]
+            },
+            {
+                id: 9,
+                category: "Education Path",
+                text: "How do you feel about formal education and credentials?",
+                scenario: "Different careers have different requirements. What path sounds most realistic for you?",
+                options: [
+                    { 
+                        label: "Committed to Deep Education", 
+                        description: "I'm willing to invest in advanced degrees (Master's, PhD, MD, JD) to build specialized expertise",
+                        value: "advanced-education",
+                        weights: { specialized: 4, human: 1 }
+                    },
+                    { 
+                        label: "Bachelor's Plus Learning", 
+                        description: "4-year degree plus continuous skill development, certifications, and on-the-job learning",
+                        value: "standard-education",
+                        weights: { strategic: 2, technical: 2 }
+                    },
+                    { 
+                        label: "Skills Over Credentials", 
+                        description: "I'd rather build a portfolio and learn through bootcamps, projects, and experience",
+                        value: "alternative-education",
+                        weights: { creative: 2, technical: 2 }
+                    },
+                    { 
+                        label: "Flexible Path", 
+                        description: "Start working, then pursue education as needed based on what I discover I'm passionate about",
+                        value: "exploratory-education",
+                        weights: { creative: 1, technical: 1, strategic: 1, human: 1 }
+                    }
+                ]
+            },
+            {
+                id: 10,
+                category: "Automation Outlook",
+                text: "Looking 10-15 years ahead, what role do you want automation to play in your work?",
+                options: [
+                    { 
+                        label: "Automation Sets Me Free", 
+                        description: "Let AI handle routine work so I can focus exclusively on high-value creative or strategic thinking",
+                        value: "automation-positive",
+                        weights: { creative: 2, strategic: 2 }
+                    },
+                    { 
+                        label: "I Build the Automation", 
+                        description: "My job is creating the AI systems and automation tools that transform how work gets done",
+                        value: "automation-creator",
+                        weights: { technical: 4 }
+                    },
+                    { 
+                        label: "Automation-Resistant Work", 
+                        description: "I want work where human judgment, empathy, and expertise remain central—AI is just a tool",
+                        value: "automation-resistant",
+                        weights: { human: 3, specialized: 2 }
+                    },
+                    { 
+                        label: "Human-AI Collaboration", 
+                        description: "I envision working alongside AI systems, each playing to our strengths in a coordinated way",
+                        value: "automation-collaborative",
+                        weights: { strategic: 2, technical: 1, creative: 1 }
+                    }
+                ]
+            },
+            {
+                id: 11,
+                category: "Daily Reality",
+                text: "Which daily work reality sounds most appealing?",
+                scenario: "Forget the title—think about what you'd actually be doing hour-to-hour.",
+                options: [
+                    { 
+                        label: "Screen Time, Deep Focus", 
+                        description: "Hours of concentrated work—coding, designing, writing, analyzing",
+                        value: "screen-focused",
+                        weights: { technical: 2, creative: 2 }
+                    },
+                    { 
+                        label: "People Interaction", 
+                        description: "Meetings, consultations, teaching, collaborating—most of my day involves direct human interaction",
+                        value: "people-focused",
+                        weights: { human: 3, strategic: 1 }
+                    },
+                    { 
+                        label: "Varied and Dynamic", 
+                        description: "Mix of independent work, collaboration, meetings, and hands-on problem-solving",
+                        value: "varied",
+                        weights: { strategic: 2, creative: 1, technical: 1 }
+                    },
+                    { 
+                        label: "Strategic and Coordination", 
+                        description: "Planning, directing teams, making decisions, managing complex projects with moving parts",
+                        value: "coordination-focused",
+                        weights: { strategic: 4 }
+                    }
+                ]
+            },
+            {
+                id: 12,
+                category: "Reality Check",
+                text: "Final question: Be honest—what's your real technical aptitude and interest?",
+                scenario: "No judgment. Different career paths require different levels of technical depth.",
+                options: [
+                    { 
+                        label: "Tech-Native", 
+                        description: "I love technology, I'm good with it, and I want it to be central to my career",
+                        value: "tech-high",
+                        weights: { technical: 4 }
+                    },
+                    { 
+                        label: "Tech-Comfortable", 
+                        description: "I can learn technical tools and work with technology, but it's not my passion",
+                        value: "tech-moderate",
+                        weights: { technical: 1, creative: 1, strategic: 1 }
+                    },
+                    { 
+                        label: "Tech-Adjacent", 
+                        description: "I want to work in modern industries but focus on non-technical aspects (strategy, people, creative)",
+                        value: "tech-low",
+                        weights: { creative: 2, strategic: 2, human: 1 }
+                    },
+                    { 
+                        label: "Tech-Optional", 
+                        description: "I'd rather work in fields where technology is a tool but not the focus—human expertise matters most",
+                        value: "tech-minimal",
+                        weights: { human: 3, specialized: 2 }
+                    }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = [];
+        let scores = {
+            creative: 0,
+            technical: 0,
+            strategic: 0,
+            human: 0,
+            specialized: 0
+        };
+
+        function renderQuestion() {
+            const question = questions[currentQuestion];
+            const progress = currentQuestion + 1;
+            
+            const progressSteps = Array.from({length: questions.length}, (_, i) => 
+                `<div class="progress-step ${i < progress ? 'active' : ''}"></div>`
+            ).join('');
+
+            const html = `
+                <div class="progress-container">
+                    <div class="progress-steps">
+                        ${progressSteps}
+                    </div>
+                    <div class="progress-text">${progress} / ${questions.length}</div>
+                </div>
+
+                <div class="question-card">
+                    <div class="question-category">${question.category}</div>
+                    <div class="question-text">${question.text}</div>
+                    ${question.scenario ? `<div class="scenario-box">${question.scenario}</div>` : ''}
+                    <div class="options">
+                        ${question.options.map((option, index) => `
+                            <div class="option" data-index="${index}">
+                                <div class="option-content">
+                                    <div class="option-label">${option.label}</div>
+                                    <div class="option-description">${option.description}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="button-container">
+                        ${currentQuestion > 0 ? '<button class="btn-secondary" onclick="previousQuestion()">Back</button>' : ''}
+                        <button class="btn-primary" id="next-btn" onclick="nextQuestion()" disabled>
+                            ${currentQuestion === questions.length - 1 ? 'See Your Path' : 'Continue'}
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('quiz-container').innerHTML = html;
+
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    document.getElementById('next-btn').disabled = false;
+                });
+            });
+        }
+
+        function nextQuestion() {
+            const selectedOption = document.querySelector('.option.selected');
+            if (!selectedOption) return;
+
+            const selectedIndex = parseInt(selectedOption.dataset.index);
+            const question = questions[currentQuestion];
+            const answer = question.options[selectedIndex];
+            
+            answers.push(answer);
+            
+            // Add weights to scores
+            Object.keys(answer.weights).forEach(category => {
+                scores[category] += answer.weights[category];
+            });
+
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                const lastAnswer = answers.pop();
+                Object.keys(lastAnswer.weights).forEach(category => {
+                    scores[category] -= lastAnswer.weights[category];
+                });
+                currentQuestion--;
+                renderQuestion();
+            }
+        }
+
+        function calculatePathway() {
+            // Find dominant score category
+            const sortedScores = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+            const primary = sortedScores[0][0];
+            const secondary = sortedScores[1][0];
+            const primaryScore = sortedScores[0][1];
+
+            // Determine pathway based on score combinations
+            if (primary === 'technical' && primaryScore >= 15) {
+                if (secondary === 'creative') {
+                    return 'tech-creative';
+                } else if (secondary === 'strategic') {
+                    return 'tech-architect';
+                } else {
+                    return 'tech-specialist';
+                }
+            } else if (primary === 'creative' && primaryScore >= 12) {
+                if (secondary === 'technical') {
+                    return 'creative-tech';
+                } else if (secondary === 'strategic') {
+                    return 'creative-strategic';
+                } else {
+                    return 'creative-pure';
+                }
+            } else if (primary === 'human' && primaryScore >= 15) {
+                if (secondary === 'specialized') {
+                    return 'human-expert';
+                } else if (secondary === 'strategic') {
+                    return 'human-leadership';
+                } else {
+                    return 'human-service';
+                }
+            } else if (primary === 'strategic' && primaryScore >= 15) {
+                if (secondary === 'technical') {
+                    return 'strategic-tech';
+                } else {
+                    return 'strategic-leadership';
+                }
+            } else if (primary === 'specialized') {
+                return 'specialist-expert';
+            } else {
+                // Balanced scores - look at secondary patterns
+                if (scores.creative >= 10 && scores.strategic >= 10) {
+                    return 'creative-strategic';
+                } else if (scores.technical >= 10 && scores.human >= 10) {
+                    return 'balanced-tech-human';
+                } else {
+                    return 'generalist';
+                }
+            }
+        }
+
+        const pathwayProfiles = {
+            'tech-specialist': {
+                icon: '⚙️',
+                title: 'AI Systems Builder',
+                subtitle: 'Technical depth specialist—you build the AI future',
+                description: 'You\'re drawn to the technical core of AI and emerging technologies. You want to be the person who actually builds, trains, and deploys the systems that everyone else uses.',
+                reality: 'This is one of the hottest career paths right now. Companies are desperate for people who can work with AI/ML systems, build reliable software, and understand complex technical architectures. The field is evolving rapidly—expect your tech stack to change every 2-3 years.',
+                careers: [
+                    { title: 'AI/ML Engineer', description: 'Build and train machine learning models and systems' },
+                    { title: 'Full-Stack Developer', description: 'Create end-to-end applications and platforms' },
+                    { title: 'Data Engineer', description: 'Build pipelines and infrastructure for AI systems' },
+                    { title: 'Robotics Engineer', description: 'Design intelligent autonomous systems' }
+                ],
+                skills: ['Python/PyTorch', 'System Design', 'Cloud Infrastructure', 'AI/ML Fundamentals', 'API Development', 'Data Structures'],
+                action: 'Your Next Steps:',
+                steps: [
+                    'Start coding NOW—build projects, contribute to open source, create a portfolio',
+                    'Get comfortable with AI tools (ChatGPT, Claude, GitHub Copilot) as development aids',
+                    'Consider a CS degree, bootcamp, or online program (Coursera, Udacity) depending on your timeline',
+                    'Specialize in one area first (web dev, ML, data) before branching out',
+                    'Intern or freelance early to get real-world experience'
+                ],
+                timeline: 'Entry-level roles attainable in 1-2 years with focused learning. Senior roles in 4-6 years.'
+            },
+            'tech-creative': {
+                icon: '🎨',
+                title: 'AI-Augmented Creator',
+                subtitle: 'Technical skills meet creative vision',
+                description: 'You combine technical capability with creative sensibility. You want to use technology as a medium for creative expression—whether that\'s design, interactive experiences, or digital products.',
+                reality: 'This is the future of creative work. AI tools are already transforming design, development, and content creation. The winners will be people who understand both the technical possibilities and the creative principles. You\'ll use AI as a collaborative tool, not a replacement.',
+                careers: [
+                    { title: 'Product Designer', description: 'Design digital products and user experiences' },
+                    { title: 'Creative Technologist', description: 'Prototype innovative experiences with code and design' },
+                    { title: 'Technical Artist', description: 'Bridge art and technology in games, film, or XR' },
+                    { title: 'UX Engineer', description: 'Build polished interfaces with design sensibility' }
+                ],
+                skills: ['Figma/Design Tools', 'Frontend Development', 'AI-Assisted Design', 'Motion/Animation', 'User Psychology', 'Prototyping'],
+                action: 'Your Next Steps:',
+                steps: [
+                    'Build a portfolio of creative projects that show both design and technical skills',
+                    'Learn design fundamentals AND basic coding (HTML/CSS/JavaScript)',
+                    'Experiment with AI tools for creativity (Midjourney, RunwayML, ChatGPT for ideation)',
+                    'Study successful products and understand why they work',
+                    'Consider design bootcamps or CS programs with HCI/design focus'
+                ],
+                timeline: 'Portfolio-ready in 1-2 years. Strong career progression as you develop signature style and technical depth.'
+            },
+            'creative-strategic': {
+                icon: '💡',
+                title: 'Strategic Creative',
+                subtitle: 'High-level creative thinking for business impact',
+                description: 'You want to work at the intersection of creativity and business strategy. This isn\'t just about making pretty things—it\'s about creative thinking that solves real problems and drives outcomes.',
+                reality: 'This path combines creative skills with strategic thinking—brand strategy, content strategy, creative direction, product strategy. AI will handle execution, but human insight into what resonates, why it matters, and how to position ideas remains irreplaceable.',
+                careers: [
+                    { title: 'Brand Strategist', description: 'Shape how companies present themselves to the world' },
+                    { title: 'Content Strategist', description: 'Plan and direct content that achieves business goals' },
+                    { title: 'Creative Director', description: 'Lead creative teams and campaigns' },
+                    { title: 'Product Marketing', description: 'Position products and tell their stories' }
+                ],
+                skills: ['Strategic Thinking', 'Storytelling', 'Consumer Psychology', 'AI Content Tools', 'Data-Informed Creativity', 'Communication'],
+                action: 'Your Next Steps:',
+                steps: [
+                    'Study successful campaigns and brands—understand the strategy behind the creative',
+                    'Build a portfolio showing strategic thinking, not just execution',
+                    'Learn to use AI for research, ideation, and rapid prototyping',
+                    'Develop business acumen—understand marketing, metrics, and ROI',
+                    'Consider communications, marketing, or business programs with creative focus'
+                ],
+                timeline: '2-4 years to junior roles. Strategic roles typically require 5+ years of pattern recognition.'
+            },
+            'creative-pure': {
+                icon: '✨',
+                title: 'Creative Specialist',
+                subtitle: 'Master craftsperson in creative domains',
+                description: 'You\'re focused on creative excellence in a specific medium—writing, design, film, art. You want your craft to be the center of your career, not a supporting skill.',
+                reality: 'AI is disrupting creative fields, but it\'s not replacing great creative work—it\'s raising the bar. Mediocre creative work becomes commoditized. Exceptional creative work becomes more valuable. Your path requires developing a distinctive voice and vision that AI can\'t replicate.',
+                careers: [
+                    { title: 'Senior Designer', description: 'Specialized visual or product design expertise' },
+                    { title: 'Writer/Author', description: 'Original long-form writing with distinctive voice' },
+                    { title: 'Film/Video Director', description: 'Creative vision for visual storytelling' },
+                    { title: 'Art Director', description: 'Lead creative vision for campaigns or publications' }
+                ],
+                skills: ['Your Craft (10,000 hours)', 'Personal Style/Voice', 'AI as Creative Tool', 'Storytelling', 'Visual Literacy', 'Self-Direction'],
+                action: 'Your Next Steps:',
+                steps: [
+                    'Create prolifically—volume leads to quality, and AI can speed up iteration',
+                    'Study masters in your field to understand what makes great work transcendent',
+                    'Use AI as a collaborator for research, ideation, and iteration—not as a replacement',
+                    'Build a distinctive style that\'s recognizably yours',
+                    'Consider formal training (art school, MFA, film school) OR intensive self-directed learning',
+                    'Prepare for a non-linear career path—creative specialists often freelance or build personal brands'
+                ],
+                timeline: 'Breakthrough often takes 5-10 years. AI tools can accelerate skill development but not the development of unique perspective.'
+            },
+            'human-expert': {
+                icon: '🩺',
+                title: 'Human-Centered Expert',
+                subtitle: 'Specialized expertise where humanity is irreplaceable',
+                description: 'You\'re drawn to fields where deep expertise and human judgment are central—medicine, law, therapy, specialized consulting. These fields will adopt AI tools, but human expertise remains the core product.',
+                reality: 'These are among the most AI-resistant careers. AI will be your diagnostic assistant, research tool, and administrative helper—but critical judgment, ethical decisions, and human connection remain irreplaceable. Expect 7-10 years of education and training.',
+                careers: [
+                    { title: 'Physician/Surgeon', description: 'Medical diagnosis and treatment requiring expertise and judgment' },
+                    { title: 'Therapist/Psychologist', description: 'Mental health care centered on human connection' },
+                    { title: 'Attorney (Complex Law)', description: 'Legal strategy and advocacy requiring judgment' },
+                    { title: 'Specialized Consultant', description: 'Deep expertise in niche domains' }
+                ],
+                skills: ['Domain Expertise (Graduate Degree)', 'Clinical/Professional Judgment', 'Emotional Intelligence', 'AI-Assisted Diagnosis/Research', 'Communication', 'Ethics'],
+                action: 'Your Next Steps:',
+                steps: [
+                    'Commit to the education path—these careers require advanced degrees (MD, PhD, PsyD, JD)',
+                    'Research specific specializations—AI impact varies widely within each field',
+                    'Understand that AI will change HOW you practice, not WHETHER you\'re needed',
+                    'Seek shadowing or volunteer opportunities to confirm your interest',
+                    'Plan for 7-12 years of education and training (undergrad + graduate + residency/articles)'
+                ],
+                timeline: 'Long runway: 7-12 years of training. But career stability and earning potential are excellent for those who complete the journey.'
+            },
+            'human-service': {
+                icon: '🤝',
+                title: 'Direct Human Impact Professional',
+                subtitle: 'Work where human connection is the product',
+                description: 'You want work where helping people directly is the core function—teaching, counseling, social work, healthcare support, or other service professions. These roles are fundamentally about human relationships.',
+                reality: 'These fields are highly resistant to AI replacement because the human relationship IS the service. AI can provide information, but it can\'t provide empathy, build trust, or navigate complex emotional situations. Expect moderate pay but high job satisfaction for those who are called to this work.',
+                careers: [
+                    { title: 'Teacher/Professor', description: 'Education focused on human development and mentorship' },
+                    { title: 'School Counselor', description: 'Supporting students through personal and academic challenges' },
+                    { title: 'Social Worker', description: 'Helping vulnerable populations navigate complex systems' },
+                    { title: 'Healthcare Support', description: 'Nursing, therapy, elderly care—hands-on human care' }
+                ],
+                skills: ['Emotional Intelligence', 'Active Listening', 'Patience & Empathy', 'Cultural Competence', 'Conflict Resolution', 'Advocacy'],
+                action: 'Your Next Steps:',
+                steps: [
+                    'Gain direct experience through volunteering, internships, or entry-level positions',
+                    'Pursue relevant education (teaching credential, MSW, nursing degree, etc.)',
+                    'Develop strong interpersonal skills—this is your core competency',
+                    'Understand that AI will handle paperwork and logistics, letting you focus on people',
+                    'Prepare for the reality: meaningful work but often challenging compensation'
+                ],
+                timeline: '2-4 years for bachelor\'s + credential programs. Some specializations require master\'s degrees (2-3 additional years).'
+            },
+            'human-leadership': {
+                icon: '👥',
+                title: 'People & Culture Leader',
+                subtitle: 'Build teams, culture, and organizational capability',
+                description: 'You\'re energized by leading people, developing talent, and shaping organizational culture. You see your role as unlocking human potential and building high-performing teams.',
+                reality: 'As AI handles more technical work, human leadership becomes MORE valuable, not less. Organizations need people who can manage AI-augmented teams, navigate change, and maintain culture. This path typically requires 5-8 years of experience before leadership opportunities.',
+                careers: [
+                    { title: 'People Operations/HR Leader', description: 'Build hiring, culture, and development programs' },
+                    { title: 'Organizational Development', description: 'Help companies adapt and grow capabilities' },
+                    { title: 'Executive Coach', description: 'Develop leadership capabilities in others' },
+                    { title: 'Team Manager/Director', description: 'Lead and develop high-performing teams' }
+                ],
+                skills: ['Leadership & Influence', 'Emotional Intelligence', 'Organizational Psychology', 'Change Management', 'Communication', 'Systems Thinking'],
+                action: 'Your Next Steps:',
+                steps: [
+                    'Start in individual contributor roles to build credibility and understand the work',
+                    'Seek early leadership opportunities—lead projects, mentor others, manage small teams',
+                    'Study leadership formally (MBA, organizational psych, or leadership programs)',
+                    'Develop deep empathy and ability to read organizational dynamics',
+                    'Understand that AI changes what teams do, but not the fundamentals of leading humans'
+                ],
+                timeline: '5-8 years to first management roles. 10-15 years to senior leadership. Requires demonstrated track record.'
+            },
+            'strategic-tech': {
+                icon: '🚀',
+                title: 'Technical Product Leader',
+                subtitle: 'Translate between technology and business strategy',
+                description: 'You want to work at the intersection of technology and business. You understand both technical possibilities and strategic needs—translating between engineers and executives.',
+                reality: 'This is one of the highest-demand career paths. Companies need people who can identify what technology can do, make smart build-vs-buy decisions, and drive technical strategy. Requires both technical credibility and strategic thinking.',
+                careers: [
+                    { title: 'Product Manager (Technical)', description: 'Define what technical products should do and why' },
+                    { title: 'Technical Program Manager', description: 'Coordinate complex technical initiatives' },
+                    { title: 'Solutions Architect', description: 'Design technical solutions for business problems' },
+                    { title: 'VP of Product/Engineering', description: 'Lead product and technical teams at scale' }
+                ],
+                skills: ['Technical Fluency', 'Product Strategy', 'Stakeholder Management', 'Data-Driven Decision Making', 'System Design', 'User Psychology'],
+                action: 'Your Next Steps:',
+                steps: [
+                    'Build technical credibility first—work as engineer, designer, or analyst for 2-4 years',
+                    'Develop business acumen—understand metrics, strategy, and user needs',
+                    'Learn to communicate across technical and non-technical audiences',
+                    'Get comfortable with AI systems—these will be central to future products',
+                    'Consider CS undergrad + MBA, or start technical and add business skills'
+                ],
+                timeline: '4-6 years to product management roles. 8-12 years to senior leadership. Requires both technical and business credibility.'
+            },
+            'strategic-leadership': {
+                icon: '♟️',
+                title: 'Strategic Operations Leader',
+                subtitle: 'High-level strategy and organizational impact',
+                description: 'You\'re drawn to the C-suite side of business—strategy, operations, general management. You want to make decisions that shape organizations and see the big picture.',
+                reality: 'This is a long game. Strategic leadership roles require 10-15 years of building credibility, understanding industries, and demonstrating judgment. AI will provide better analysis, but strategic vision, risk assessment, and leadership remain human work.',
+                careers: [
+                    { title: 'Strategy Consultant', description: 'Advise executives on major decisions and transformations' },
+                    { title: 'Operations Leader', description: 'Run day-to-day business operations at scale' },
+                    { title: 'Chief of Staff', description: 'Support and extend executive leadership' },
+                    { title: 'General Manager/COO', description: 'P&L ownership and operational leadership' }
+                ],
+                skills: ['Strategic Thinking', 'Financial Acumen', 'Change Leadership', 'Stakeholder Management', 'Executive Communication', 'Systems Thinking'],
+                action: 'Your Next Steps:',
+                steps: [
+                    'Start in consulting, finance, or operations to build business fundamentals',
+                    'Develop deep understanding of how businesses actually work',
+                    'Build track record of driving results and leading through complexity',
+                    'Consider MBA from top program for credibility and network',
+                    'Accept that this path takes 10-15 years—leadership roles require proven judgment'
+                ],
+                timeline: '10-15+ years to senior strategic roles. Path usually: analyst → manager → director → VP → C-suite. Patience required.'
+            },
+            'tech-architect': {
+                icon: '🏗️',
+                title: 'Systems Architect & Technical Leader',
+                subtitle: 'Design complex systems and lead technical teams',
+                description: 'You want to work on the hardest technical problems and eventually lead technical teams. You\'re drawn to system design, architecture, and technical leadership rather than pure coding.',
+                reality: 'This is the senior track for technical careers. After 5-8 years as an engineer, you move into architecture and technical leadership. You design systems, make technical decisions, and guide teams. Deep technical expertise remains relevant throughout your career.',
+                careers: [
+                    { title: 'Solutions/Systems Architect', description: 'Design large-scale technical systems' },
+                    { title: 'Engineering Manager/Director', description: 'Lead technical teams while staying technical' },
+                    { title: 'Distinguished Engineer', description: 'Senior IC track—solve hardest technical problems' },
+                    { title: 'CTO/VP Engineering', description: 'Ultimate technical leadership role' }
+                ],
+                skills: ['Deep Technical Expertise', 'System Design', 'Technical Leadership', 'Mentorship', 'Technology Strategy', 'Communication'],
+                action: 'Your Next Steps:',
+                steps: [
+                    'Start as software engineer and build 5-8 years of hands-on experience',
+                    'Take on increasingly complex technical challenges',
+                    'Develop ability to explain technical decisions to non-technical stakeholders',
+                    'Start mentoring junior engineers early to develop leadership skills',
+                    'Study successful systems and understand design patterns at scale'
+                ],
+                timeline: '5-8 years to senior engineer/architect. 10-15 years to technical director/CTO roles.'
+            },
+            'specialist-expert': {
+                icon: '🔬',
+                title: 'Deep Domain Specialist',
+                subtitle: 'World-class expertise in a specialized field',
+                description: 'You want to become a recognized expert in a specific technical or professional domain. You\'re drawn to research, specialized consulting, or academic paths where deep knowledge is the product.',
+                reality: 'Specialists become MORE valuable as AI handles generalist work. Companies need people with deep expertise in niche areas. This path typically requires graduate education (Master\'s or PhD) and 10+ years of focused experience.',
+                careers: [
+                    { title: 'Research Scientist', description: 'Push boundaries of knowledge in specific field' },
+                    { title: 'Domain Expert/Consultant', description: 'Provide specialized expertise to organizations' },
+                    { title: 'Professor/Academic', description: 'Research and teach in specialized field' },
+                    { title: 'Principal Engineer/Architect', description: 'Deepest technical expertise in specific domain' }
+                ],
+                skills: ['Deep Expertise (PhD-level)', 'Research Methods', 'Technical Writing', 'Pattern Recognition', 'Continuous Learning', 'Communication'],
+                action: 'Your Next Steps:',
+                steps: [
+                    'Identify your specialization early—what domain fascinates you enough to study for decades?',
+                    'Pursue graduate education (Master\'s minimum, often PhD for research roles)',
+                    'Publish, present, and build reputation in your field',
+                    'Use AI as a research assistant, but maintain your unique expertise and perspective',
+                    'Accept that this is a long path requiring patience and deep commitment'
+                ],
+                timeline: '7-10 years of education + 5-10 years building reputation. Senior specialist roles at 15-20 years.'
+            },
+            'balanced-tech-human': {
+                icon: '⚖️',
+                title: 'Hybrid Professional',
+                subtitle: 'Technical capability meets human-centered work',
+                description: 'You blend technical skills with strong interpersonal abilities. You might work in technical fields but in human-facing roles, or in people-centered fields with strong technical components.',
+                reality: 'This hybrid profile is increasingly valuable. Many roles need people who can both understand technology AND communicate effectively with humans. Think: technical account managers, developer advocates, healthcare technologists.',
+                careers: [
+                    { title: 'Customer Success (Technical)', description: 'Help customers succeed with complex technical products' },
+                    { title: 'Developer Advocate', description: 'Bridge between technical products and user communities' },
+                    { title: 'Healthcare Technology', description: 'Apply technology to improve patient care' },
+                    { title: 'Learning & Development', description: 'Design technical training and development programs' }
+                ],
+                skills: ['Technical Fluency', 'Communication', 'Empathy', 'Teaching', 'Problem Solving', 'Relationship Building'],
+                action: 'Your Next Steps:',
+                steps: [
+                    'Develop solid technical foundation—coding, data analysis, or technical systems',
+                    'Cultivate strong communication and interpersonal skills',
+                    'Look for roles that leverage both skill sets',
+                    'Consider technical fields with high human interaction',
+                    'Build reputation as someone who can "translate" between technical and non-technical'
+                ],
+                timeline: '2-4 years to entry roles. Strong career progression as you develop both dimensions.'
+            },
+            'generalist': {
+                icon: '🌐',
+                title: 'Adaptive Generalist',
+                subtitle: 'Build broad capabilities and stay flexible',
+                description: 'You\'re interested in multiple directions and aren\'t ready to commit to a specific path. That\'s okay—in a rapidly changing world, adaptability has value.',
+                reality: 'Generalists face a more challenging landscape as AI commoditizes general knowledge. The path forward: either develop T-shaped skills (broad knowledge + one deep expertise), or focus on coordination/integration roles where connecting dots matters more than deep expertise.',
+                careers: [
+                    { title: 'Project Manager', description: 'Coordinate complex initiatives across teams' },
+                    { title: 'Business Analyst', description: 'Understand problems and propose solutions' },
+                    { title: 'Operations Manager', description: 'Keep organizations running smoothly' },
+                    { title: 'Entrepreneur', description: 'Build businesses leveraging various skills' }
+                ],
+                skills: ['Adaptability', 'Communication', 'Project Management', 'Problem Solving', 'Quick Learning', 'Coordination'],
+                action: 'Your Next Steps:',
+                steps: [
+                    'Explore different areas through internships, side projects, or entry roles',
+                    'Develop T-shaped skills: broad capabilities + one area of depth',
+                    'Get comfortable with AI tools across multiple domains',
+                    'Look for integrative roles where connecting different areas creates value',
+                    'Accept that you may need to specialize eventually—use this time to explore'
+                ],
+                timeline: 'Flexible. Use first 2-3 years to explore, then develop depth in one direction.'
+            }
+        };
+
+        function showResults() {
+            const pathwayKey = calculatePathway();
+            const pathway = pathwayProfiles[pathwayKey];
+            
+            const html = `
+                <div class="results">
+                    <div class="pathway-header">
+                        <div class="pathway-content">
+                            <div class="pathway-icon">${pathway.icon}</div>
+                            <div class="pathway-title">${pathway.title}</div>
+                            <div class="pathway-subtitle">${pathway.subtitle}</div>
+                        </div>
+                    </div>
+
+                    <div class="results-section">
+                        <h3>What This Means</h3>
+                        <p>${pathway.description}</p>
+                    </div>
+
+                    <div class="results-section">
+                        <h3>The Reality</h3>
+                        <p>${pathway.reality}</p>
+                        ${pathway.timeline ? `<p><strong>Typical Timeline:</strong> ${pathway.timeline}</p>` : ''}
+                    </div>
+
+                    <div class="results-section">
+                        <h3>Career Examples</h3>
+                        <div class="career-examples">
+                            ${pathway.careers.map(career => `
+                                <div class="career-card">
+                                    <h4>${career.title}</h4>
+                                    <p>${career.description}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="results-section">
+                        <h3>Skills to Develop</h3>
+                        <div class="skills-list">
+                            ${pathway.skills.map(skill => `<div class="skill-tag">${skill}</div>`).join('')}
+                        </div>
+                    </div>
+
+                    <div class="action-callout">
+                        <div class="action-callout-content">
+                            <h4>${pathway.action}</h4>
+                            <ul>
+                                ${pathway.steps.map(step => `<li>${step}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <button class="restart-btn" onclick="restartQuiz()">Explore Another Path</button>
+                </div>
+            `;
+
+            document.getElementById('quiz-container').innerHTML = html;
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            answers = [];
+            scores = {
+                creative: 0,
+                technical: 0,
+                strategic: 0,
+                human: 0,
+                specialized: 0
+            };
+            renderQuestion();
+        }
+
+        // Start the quiz
+        renderQuestion();
+    </script>
+</body>
+</html>
