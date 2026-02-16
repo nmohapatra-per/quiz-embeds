@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Will AI Impact Your Career Interest?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #7d8590;
+            --accent-primary: #58a6ff;
+            --accent-warn: #f0883e;
+            --accent-danger: #ff7b72;
+            --accent-success: #56d364;
+            --border: #30363d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--accent-primary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 32px;
+        }
+
+        .card h2 {
+            font-size: 1.75rem;
+            margin-bottom: 12px;
+        }
+
+        .card-description {
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .category-card {
+            background: var(--bg-tertiary);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-4px);
+        }
+
+        .category-card.selected {
+            border-color: var(--accent-primary);
+        }
+
+        .category-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .category-name {
+            font-weight: 700;
+            font-size: 1.125rem;
+            margin-bottom: 8px;
+        }
+
+        .category-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .careers-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .career-option {
+            background: var(--bg-tertiary);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .career-option:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .career-option.selected {
+            border-color: var(--accent-primary);
+        }
+
+        .career-info {
+            flex: 1;
+        }
+
+        .career-title {
+            font-weight: 700;
+            font-size: 1.0625rem;
+            margin-bottom: 4px;
+        }
+
+        .career-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .risk-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .risk-high {
+            background: rgba(255, 123, 114, 0.2);
+            color: var(--accent-danger);
+            border: 1px solid var(--accent-danger);
+        }
+
+        .risk-medium {
+            background: rgba(240, 136, 62, 0.2);
+            color: var(--accent-warn);
+            border: 1px solid var(--accent-warn);
+        }
+
+        .risk-low {
+            background: rgba(86, 211, 100, 0.2);
+            color: var(--accent-success);
+            border: 1px solid var(--accent-success);
+        }
+
+        button {
+            padding: 16px 32px;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Manrope', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+            width: 100%;
+            margin-top: 24px;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            opacity: 0.9;
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .button-group button {
+            flex: 1;
+        }
+
+        .results-header {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 48px;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .results-career {
+            font-size: 0.875rem;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .results-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .results-timeline {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        .section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            color: var(--accent-primary);
+        }
+
+        .section p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            line-height: 1.8;
+        }
+
+        .timeline-item {
+            padding: 20px 0;
+            border-left: 3px solid var(--border);
+            padding-left: 24px;
+            margin-left: 12px;
+        }
+
+        .timeline-year {
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 8px;
+        }
+
+        .skill-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .skill-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .skill-card h4 {
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .skill-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .callout {
+            background: rgba(88, 166, 255, 0.1);
+            border-left: 4px solid var(--accent-primary);
+            padding: 24px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+
+        .callout-title {
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-badge">
+                <span>🎯</span> Career Impact Assessment
+            </div>
+            <h1>How Will AI Impact Your Career Interest?</h1>
+            <p class="subtitle">Select a career field you're interested in to understand how AI will transform it over the next decade—and what you need to prepare.</p>
+        </header>
+
+        <div id="app"></div>
+    </div>
+
+    <script>
+        const CATEGORIES = [
+            {
+                id: 'healthcare',
+                icon: '🏥',
+                name: 'Healthcare & Medicine',
+                description: 'Medical, clinical, and patient care roles',
+                careers: [
+                    { name: 'Physician/Surgeon', risk: 'low', subtitle: 'Diagnosis and treatment requiring expertise' },
+                    { name: 'Nurse (RN)', risk: 'low', subtitle: 'Patient care and clinical judgment' },
+                    { name: 'Therapist/Counselor', risk: 'low', subtitle: 'Mental health and emotional support' }
+                ]
+            },
+            {
+                id: 'creative',
+                icon: '🎨',
+                name: 'Creative & Design',
+                description: 'Visual, written, and artistic work',
+                careers: [
+                    { name: 'Graphic Designer', risk: 'medium', subtitle: 'Brand and visual design' },
+                    { name: 'Content Writer', risk: 'high', subtitle: 'SEO, marketing, and basic copy' },
+                    { name: 'Creative Director', risk: 'low', subtitle: 'Strategic creative vision' }
+                ]
+            },
+            {
+                id: 'technology',
+                icon: '💻',
+                name: 'Technology & Engineering',
+                description: 'Software, hardware, and technical roles',
+                careers: [
+                    { name: 'Software Engineer', risk: 'medium', subtitle: 'Application development' },
+                    { name: 'AI/ML Engineer', risk: 'low', subtitle: 'Building AI systems' },
+                    { name: 'Data Scientist', risk: 'medium', subtitle: 'Data analysis and modeling' }
+                ]
+            },
+            {
+                id: 'business',
+                icon: '💼',
+                name: 'Business & Finance',
+                description: 'Corporate, financial, and administrative roles',
+                careers: [
+                    { name: 'Accountant', risk: 'high', subtitle: 'Bookkeeping and basic accounting' },
+                    { name: 'Financial Analyst', risk: 'medium', subtitle: 'Financial modeling' },
+                    { name: 'Management Consultant', risk: 'low', subtitle: 'Strategic business advice' }
+                ]
+            }
+        ];
+
+        const ANALYSES = {
+            'Physician/Surgeon': {
+                title: 'AI-Enhanced Medicine',
+                timeline: 'Major transformation by 2030, but human expertise remains central',
+                overview: 'Medicine will be revolutionized by AI, but physicians remain irreplaceable. AI will serve as a diagnostic assistant, research tool, and administrative helper—but critical medical judgment, patient relationships, and ethical decisions require human doctors.',
+                changes: [
+                    { period: '2025-2027', text: 'AI diagnostic tools become standard. Physicians learn to work WITH these tools.' },
+                    { period: '2028-2030', text: 'AI handles medical documentation and suggests treatment protocols. Doctors focus on patient communication and complex cases.' },
+                    { period: '2031-2035', text: 'Personalized medicine powered by AI. Physicians become medical strategists directing AI-powered care systems.' }
+                ],
+                skills: [
+                    { title: 'AI Tool Proficiency', description: 'Learn to interpret AI diagnostic outputs' },
+                    { title: 'Complex Decision Making', description: 'Handle cases AI cannot resolve' },
+                    { title: 'Patient Communication', description: 'Explain AI recommendations and build trust' }
+                ],
+                bottomLine: 'Physicians who embrace AI as a tool will practice better medicine. Your medical expertise becomes MORE valuable, not less—AI handles routine analysis while you focus on complex judgment and human connection.',
+                prepare: 'Stay current with AI medical tools. Focus on developing exceptional diagnostic reasoning and patient communication skills.'
+            },
+            'Nurse (RN)': {
+                title: 'Nursing Remains Human-Centered',
+                timeline: 'AI augments nursing work but does not replace it',
+                overview: 'Nursing is one of the most AI-resistant healthcare roles because it is fundamentally about human connection, physical care, and real-time clinical judgment. AI will handle documentation and monitoring, freeing nurses to focus on actual patient care.',
+                changes: [
+                    { period: '2025-2027', text: 'AI-powered monitoring systems alert nurses to patient changes. Automated documentation reduces paperwork.' },
+                    { period: '2028-2030', text: 'Smart hospital systems predict patient needs. Nurses spend less time on admin, more on direct care.' },
+                    { period: '2031-2035', text: 'AI assistants help with medication management, but hands-on patient care remains fully human.' }
+                ],
+                skills: [
+                    { title: 'Clinical Judgment', description: 'Complex patient assessment AI cannot replicate' },
+                    { title: 'Emotional Intelligence', description: 'Providing empathetic care' },
+                    { title: 'Tech Literacy', description: 'Working with AI monitoring systems' }
+                ],
+                bottomLine: 'Nursing is fundamentally human work. AI makes your job easier by handling monitoring and documentation, but core nursing skills remain irreplaceable. Demand for nurses will continue to grow.',
+                prepare: 'Embrace AI tools for monitoring and documentation. Double down on clinical judgment and patient communication skills.'
+            },
+            'Therapist/Counselor': {
+                title: 'Human Connection Cannot Be Automated',
+                timeline: 'Minimal AI disruption through 2035',
+                overview: 'Therapy and counseling are fundamentally human professions built on trust, empathy, and emotional connection. While AI chatbots may handle basic mental health screening, deep therapeutic work requires human therapists.',
+                changes: [
+                    { period: '2025-2027', text: 'AI tools help with scheduling, note-taking, and basic mental health screening.' },
+                    { period: '2028-2030', text: 'AI provides therapists with research and treatment suggestions, but therapy sessions remain entirely human.' },
+                    { period: '2031-2035', text: 'AI handles administrative burden, allowing therapists to focus purely on patient care.' }
+                ],
+                skills: [
+                    { title: 'Deep Empathy', description: 'Building trust and emotional connection' },
+                    { title: 'Active Listening', description: 'Understanding unspoken needs and concerns' },
+                    { title: 'Therapeutic Techniques', description: 'Evidence-based treatment approaches' }
+                ],
+                bottomLine: 'Therapy is one of the most AI-resistant careers. The human relationship is the therapy. AI will never replace the healing power of human connection and understanding.',
+                prepare: 'Focus on developing deep therapeutic skills. Stay current with evidence-based practices. AI will make your administrative work easier, not replace your core function.'
+            },
+            'Content Writer': {
+                title: 'Commodity Content Gets Automated',
+                timeline: 'Severe disruption already underway, accelerates through 2026',
+                overview: 'AI writing tools have already devastated the market for basic content writing. SEO articles, product descriptions, and marketing copy can now be generated by AI at massive scale. Generic content writing is one of the highest-risk careers in the AI era.',
+                changes: [
+                    { period: '2025-2027', text: 'Market for basic SEO content collapses. Companies generate this content in-house using AI.' },
+                    { period: '2028-2030', text: 'AI handles 80%+ of content marketing work. Remaining writers need distinctive voice or deep expertise.' },
+                    { period: '2031-2035', text: 'Generic content writer as a job largely ceases to exist. Writers are either specialized journalists or strategic professionals.' }
+                ],
+                skills: [
+                    { title: 'Original Reporting', description: 'Investigative skills AI cannot replicate' },
+                    { title: 'Distinctive Voice', description: 'Writing style people actively seek out' },
+                    { title: 'Subject Expertise', description: 'Deep knowledge in specific domains' }
+                ],
+                bottomLine: 'If you write generic content that AI can replicate, your career is in serious danger. You need to urgently pivot toward investigative journalism, highly specialized writing, branded storytelling, or strategic communications.',
+                prepare: 'Develop a distinctive voice or deep expertise in a specific field. Consider pivoting to journalism, technical writing, or content strategy.'
+            },
+            'Graphic Designer': {
+                title: 'Design Splits Into High and Low End',
+                timeline: 'Significant disruption by 2027-2028',
+                overview: 'The graphic design field is being transformed by AI image generation. Commodity design work is rapidly being automated. Strategic, branded, and complex design work remains valuable—but the middle tier is hollowing out.',
+                changes: [
+                    { period: '2025-2027', text: 'AI tools eliminate need for many junior designers. Design market bifurcates into high-end strategic work vs automated commodity work.' },
+                    { period: '2028-2030', text: 'Most graphic design becomes prompt engineering and AI tool mastery. Designers need strategic thinking or distinctive creative vision.' },
+                    { period: '2031-2035', text: 'Two paths emerge: Strategic brand designers who direct AI, or AI specialists who train design systems.' }
+                ],
+                skills: [
+                    { title: 'Strategic Thinking', description: 'Understanding brand, audience, and business goals' },
+                    { title: 'AI Tool Mastery', description: 'Prompt engineering and AI-assisted design' },
+                    { title: 'Distinctive Style', description: 'Creative vision AI cannot replicate' }
+                ],
+                bottomLine: 'Mediocre designers doing commodity work will be replaced by AI. Exceptional designers who combine strategic thinking with AI mastery will thrive. You need to move UP the value chain.',
+                prepare: 'Learn AI design tools NOW. Develop strong strategic and brand thinking skills. Build a distinctive personal style.'
+            },
+            'Creative Director': {
+                title: 'Strategic Creative Leadership Thrives',
+                timeline: 'Low disruption, growing importance',
+                overview: 'Creative Directors operate at the strategic level—defining vision, managing teams, making high-stakes creative decisions. AI handles execution, making strategic creative leadership MORE valuable as someone needs to direct all those AI tools.',
+                changes: [
+                    { period: '2025-2027', text: 'Creative Directors learn to direct AI tools and junior designers using AI.' },
+                    { period: '2028-2030', text: 'The role becomes more strategic as AI handles execution. Focus shifts to creative vision and brand strategy.' },
+                    { period: '2031-2035', text: 'Creative Directors manage hybrid teams of humans and AI systems, making high-level creative and business decisions.' }
+                ],
+                skills: [
+                    { title: 'Strategic Vision', description: 'Defining creative direction and brand strategy' },
+                    { title: 'Leadership', description: 'Managing creative teams and stakeholders' },
+                    { title: 'AI Direction', description: 'Effectively directing AI creative tools' }
+                ],
+                bottomLine: 'Creative Directors are in an excellent position. AI amplifies your impact by handling execution, letting you focus on strategy and vision. Demand for this role will increase as companies need leaders who can direct AI-powered creative teams.',
+                prepare: 'Develop strategic business acumen. Learn to effectively direct AI tools. Focus on leadership and high-level creative thinking.'
+            },
+            'Software Engineer': {
+                title: 'Engineering Becomes Higher-Level',
+                timeline: 'Rapid evolution by 2026-2028',
+                overview: 'AI coding assistants are already transforming software development. Junior-level coding work is being automated, but complex system design, architecture, and debugging still require human expertise. The job is evolving from writing code to directing AI coding systems.',
+                changes: [
+                    { period: '2025-2027', text: 'AI generates 50-80% of boilerplate code. Junior positions shrink. Engineers focus on architecture and complex problems.' },
+                    { period: '2028-2030', text: 'AI can build entire features from natural language. Engineers become AI coordinators who handle edge cases.' },
+                    { period: '2031-2035', text: 'Most implementation is AI-driven. Human engineers focus on system architecture, security, and performance.' }
+                ],
+                skills: [
+                    { title: 'System Design', description: 'Architecting complex, scalable systems' },
+                    { title: 'AI Tool Proficiency', description: 'Effectively directing AI coding assistants' },
+                    { title: 'Problem Solving', description: 'Tackling novel problems AI has not seen' }
+                ],
+                bottomLine: 'Software engineering is not going away—it is evolving. Junior positions will shrink, but demand for experienced engineers who can design systems and direct AI tools will remain strong.',
+                prepare: 'Use AI coding tools daily. Focus on system design, architecture, and complex problem-solving. Develop deep expertise in areas where human judgment is critical.'
+            },
+            'AI/ML Engineer': {
+                title: 'Building the Future',
+                timeline: 'Explosive growth through 2035',
+                overview: 'AI/ML Engineers build the AI systems everyone else uses. This is one of the hottest career paths with sustained demand. Ironically, AI engineers use AI to build better AI, creating a virtuous cycle of capability.',
+                changes: [
+                    { period: '2025-2027', text: 'Demand explodes as every company wants AI capabilities. Competition for talent is intense.' },
+                    { period: '2028-2030', text: 'AI tools make AI engineering more accessible, but demand outpaces supply. Specialization increases.' },
+                    { period: '2031-2035', text: 'AI engineers focus on cutting-edge capabilities, ethical AI, and novel applications. Field continues rapid evolution.' }
+                ],
+                skills: [
+                    { title: 'Deep Learning', description: 'Neural networks, transformers, and advanced ML' },
+                    { title: 'System Design', description: 'Building scalable AI infrastructure' },
+                    { title: 'Research Skills', description: 'Staying current with rapidly evolving field' }
+                ],
+                bottomLine: 'AI/ML Engineering is one of the safest bets for the next 10-15 years. You are building the technology driving the transformation. Demand will remain extremely strong as AI capabilities expand.',
+                prepare: 'Get strong fundamentals in ML, deep learning, and system design. Stay current with latest research. Build a portfolio of AI projects.'
+            },
+            'Data Scientist': {
+                title: 'Data Science Splits Into Builders vs Users',
+                timeline: 'Significant evolution by 2027-2029',
+                overview: 'AI is automating much of what data scientists currently do—data cleaning, exploratory analysis, basic modeling. The field is splitting into AI/ML engineers who build systems, and business analysts who use AI tools.',
+                changes: [
+                    { period: '2025-2027', text: 'AI tools automate data cleaning and basic modeling. Entry-level positions decline.' },
+                    { period: '2028-2030', text: 'Data science bifurcates: technical specialists building AI vs business-focused analysts using AI tools.' },
+                    { period: '2031-2035', text: 'Most analysis is AI-automated. Remaining roles are either deep ML engineers or strategic business intelligence professionals.' }
+                ],
+                skills: [
+                    { title: 'Advanced ML', description: 'Building and training custom AI/ML systems' },
+                    { title: 'Business Strategy', description: 'Translating business problems into data solutions' },
+                    { title: 'Domain Expertise', description: 'Deep knowledge in specific industries' }
+                ],
+                bottomLine: 'Generic data science skills are being commoditized. You need to specialize—either go deep into ML engineering, or pivot toward business strategy with domain expertise. The middle ground is shrinking.',
+                prepare: 'Choose a specialization: deep ML/AI engineering or business-focused analytics. Learn to use AI-automated analysis tools. Develop either world-class technical skills OR exceptional business acumen.'
+            },
+            'Accountant': {
+                title: 'Bookkeeping Automates, Strategic Accounting Survives',
+                timeline: 'Major disruption by 2027-2028',
+                overview: 'Basic bookkeeping and data entry accounting work is being rapidly automated by AI. Routine tasks can now be done by AI systems. Accounting roles are polarizing into automated commodity work or complex tax strategy and financial advisory.',
+                changes: [
+                    { period: '2025-2027', text: 'AI accounting software automates most bookkeeping tasks. Small businesses use AI instead of hiring entry-level accountants.' },
+                    { period: '2028-2030', text: 'AI handles tax preparation for straightforward returns. Accountants focus on complex tax strategy or business advisory.' },
+                    { period: '2031-2035', text: 'Entry-level accounting jobs largely disappear. Accountants are either strategic advisors or AI system managers.' }
+                ],
+                skills: [
+                    { title: 'Tax Strategy', description: 'Complex tax planning and optimization' },
+                    { title: 'Business Advisory', description: 'Financial guidance for strategic decisions' },
+                    { title: 'Forensic Analysis', description: 'Fraud detection and complex investigations' }
+                ],
+                bottomLine: 'If you do basic bookkeeping or straightforward tax returns, your job is at high risk. You need to move up the value chain into strategic advisory work, complex tax situations, or specialized accounting niches.',
+                prepare: 'Get specialized credentials. Focus on advisory skills and complex problem-solving. Learn AI accounting tools deeply.'
+            },
+            'Financial Analyst': {
+                title: 'Analysis Becomes AI-Augmented',
+                timeline: 'Moderate transformation by 2028',
+                overview: 'Financial analysts who do routine modeling and reporting face automation. But strategic financial analysis, especially with industry expertise and business judgment, remains valuable. AI handles number-crunching; humans provide strategic insight.',
+                changes: [
+                    { period: '2025-2027', text: 'AI tools automate basic financial modeling and reporting. Entry-level analyst roles decline.' },
+                    { period: '2028-2030', text: 'AI generates comprehensive financial analyses. Human analysts focus on strategic interpretation and recommendations.' },
+                    { period: '2031-2035', text: 'Financial analysts become strategic advisors using AI tools for analysis and focusing on business judgment.' }
+                ],
+                skills: [
+                    { title: 'Strategic Thinking', description: 'Business strategy and competitive analysis' },
+                    { title: 'Industry Expertise', description: 'Deep knowledge of specific sectors' },
+                    { title: 'Communication', description: 'Translating analysis into strategic recommendations' }
+                ],
+                bottomLine: 'Financial analysts need to evolve from number-crunchers to strategic advisors. AI will handle the modeling; you need to provide business insight and strategic recommendations that AI cannot.',
+                prepare: 'Develop deep industry expertise. Focus on strategic thinking and communication skills. Learn to use AI analysis tools effectively.'
+            },
+            'Management Consultant': {
+                title: 'Strategic Consulting Remains Human',
+                timeline: 'Low disruption, evolving toolkit',
+                overview: 'Management consulting is fundamentally about strategic thinking, stakeholder management, and navigating complex organizational dynamics. AI will be a powerful research and analysis tool, but cannot replace the human judgment and relationship skills consultants bring.',
+                changes: [
+                    { period: '2025-2027', text: 'Consultants use AI for research, data analysis, and slide creation. More time for strategic thinking.' },
+                    { period: '2028-2030', text: 'AI handles much of the analytical work. Consultants focus on strategic frameworks, stakeholder management, and implementation.' },
+                    { period: '2031-2035', text: 'Consulting becomes even more strategic. AI provides the analysis; consultants provide judgment, persuasion, and change management.' }
+                ],
+                skills: [
+                    { title: 'Strategic Frameworks', description: 'Applying structured thinking to complex problems' },
+                    { title: 'Stakeholder Management', description: 'Building relationships and influencing decisions' },
+                    { title: 'Change Management', description: 'Helping organizations implement recommendations' }
+                ],
+                bottomLine: 'Management consulting is AI-resistant because it requires strategic thinking, political navigation, and change management that AI cannot provide. AI makes consultants more effective but does not replace them.',
+                prepare: 'Develop strategic thinking and stakeholder management skills. Learn to use AI tools for research and analysis. Focus on the human skills AI cannot replicate.'
+            }
+        };
+
+        let step = 1;
+        let selectedCategory = null;
+        let selectedCareer = null;
+
+        function render() {
+            const app = document.getElementById('app');
+            if (step === 1) {
+                app.innerHTML = renderCategories();
+                attachCategoryListeners();
+            } else if (step === 2) {
+                app.innerHTML = renderCareers();
+                attachCareerListeners();
+            } else if (step === 3) {
+                app.innerHTML = renderResults();
+            }
+        }
+
+        function renderCategories() {
+            return `
+                <div class="card">
+                    <h2>Choose a Career Field</h2>
+                    <p class="card-description">Select the broad field that interests you most.</p>
+                    <div class="category-grid">
+                        ${CATEGORIES.map(cat => `
+                            <div class="category-card" data-id="${cat.id}">
+                                <div class="category-icon">${cat.icon}</div>
+                                <div class="category-name">${cat.name}</div>
+                                <div class="category-description">${cat.description}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button class="btn-primary" id="next-btn" disabled>Continue to Careers</button>
+                </div>
+            `;
+        }
+
+        function renderCareers() {
+            return `
+                <div class="card">
+                    <h2>Select a Specific Career</h2>
+                    <p class="card-description">Choose the specific role within ${selectedCategory.name}.</p>
+                    <div class="careers-list">
+                        ${selectedCategory.careers.map(career => `
+                            <div class="career-option" data-name="${career.name}">
+                                <div class="career-info">
+                                    <div class="career-title">${career.name}</div>
+                                    <div class="career-subtitle">${career.subtitle}</div>
+                                </div>
+                                <div class="risk-badge risk-${career.risk}">
+                                    ${career.risk === 'high' ? 'High Impact' : career.risk === 'medium' ? 'Moderate Impact' : 'Low Impact'}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="button-group">
+                        <button class="btn-secondary" id="back-btn">Back</button>
+                        <button class="btn-primary" id="analyze-btn" disabled>Analyze Impact</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderResults() {
+            const analysis = ANALYSES[selectedCareer.name] || {
+                title: 'Analysis Coming Soon',
+                timeline: 'Check back for detailed analysis',
+                overview: 'Detailed analysis for this career is being developed.',
+                changes: [],
+                skills: [],
+                bottomLine: 'General career analysis in progress.',
+                prepare: 'Focus on developing uniquely human skills.'
+            };
+
+            return `
+                <div class="results-header">
+                    <div class="results-career">${selectedCareer.name}</div>
+                    <h1 class="results-title">${analysis.title}</h1>
+                    <p class="results-timeline">${analysis.timeline}</p>
+                </div>
+
+                <div class="section">
+                    <h3>Overview: What's Happening</h3>
+                    <p>${analysis.overview}</p>
+                </div>
+
+                ${analysis.changes.length > 0 ? `
+                    <div class="section">
+                        <h3>Timeline: How This Career Will Change</h3>
+                        ${analysis.changes.map(change => `
+                            <div class="timeline-item">
+                                <div class="timeline-year">${change.period}</div>
+                                <div>${change.text}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : ''}
+
+                ${analysis.skills.length > 0 ? `
+                    <div class="section">
+                        <h3>Essential Skills for the AI Era</h3>
+                        <div class="skill-grid">
+                            ${analysis.skills.map(skill => `
+                                <div class="skill-card">
+                                    <h4>${skill.title}</h4>
+                                    <p>${skill.description}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                ` : ''}
+
+                <div class="callout">
+                    <div class="callout-title">The Bottom Line</div>
+                    <div>${analysis.bottomLine}</div>
+                </div>
+
+                <div class="section">
+                    <h3>How to Prepare</h3>
+                    <p>${analysis.prepare}</p>
+                </div>
+
+                <button class="btn-primary" onclick="restart()">Analyze Another Career</button>
+            `;
+        }
+
+        function attachCategoryListeners() {
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const id = this.dataset.id;
+                    selectedCategory = CATEGORIES.find(c => c.id === id);
+                    document.querySelectorAll('.category-card').forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    document.getElementById('next-btn').disabled = false;
+                });
+            });
+
+            document.getElementById('next-btn').addEventListener('click', function() {
+                if (selectedCategory) {
+                    step = 2;
+                    render();
+                }
+            });
+        }
+
+        function attachCareerListeners() {
+            document.querySelectorAll('.career-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const name = this.dataset.name;
+                    selectedCareer = selectedCategory.careers.find(c => c.name === name);
+                    document.querySelectorAll('.career-option').forEach(o => o.classList.remove('selected'));
+                    this.classList.add('selected');
+                    document.getElementById('analyze-btn').disabled = false;
+                });
+            });
+
+            document.getElementById('back-btn').addEventListener('click', function() {
+                step = 1;
+                selectedCareer = null;
+                render();
+            });
+
+            document.getElementById('analyze-btn').addEventListener('click', function() {
+                if (selectedCareer) {
+                    step = 3;
+                    render();
+                }
+            });
+        }
+
+        function restart() {
+            step = 1;
+            selectedCategory = null;
+            selectedCareer = null;
+            render();
+        }
+
+        render();
+    </script>
+</body>
+</html>
